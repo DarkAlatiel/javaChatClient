@@ -13,7 +13,7 @@
       <Label text="IP-адрес" />
       <Label text="Логин" GridPane.rowIndex="1" />
       <Label text="Пароль" GridPane.rowIndex="2" />
-      <TextField fx:id="ipTextField" text="10.116.70.57" GridPane.columnIndex="1" />
+      <TextField fx:id="ipTextField" text="127.0.0.1" GridPane.columnIndex="1" />
       <TextField fx:id="loginTextField" text="excelsior" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <TextField fx:id="passwordTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Button fx:id="confirmButton" mnemonicParsing="false" onAction="#confirmButtonAction" text="Войти" GridPane.rowIndex="3" />

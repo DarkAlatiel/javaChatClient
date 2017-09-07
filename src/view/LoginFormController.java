@@ -3,7 +3,7 @@ package view;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import model.Main;
+import main.Main;
 
 public class LoginFormController {
 
@@ -18,10 +18,9 @@ public class LoginFormController {
     @FXML public void confirmButtonAction() throws Exception {
         String ip = ipTextField.getText();
         String login = loginTextField.getText();
-        //String password = passwordTextField.getText();
-        //new Client(ip, login);
+        String password = loginTextField.getText();
         Main main = Main.getInstance();
-        main.createMainFormWindow();
+        main.createClient(ip, login, password);
     }
 
         @FXML public void clearButtonAction(){

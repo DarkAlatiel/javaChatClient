@@ -5,20 +5,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import view.MainFormController;
+import view.MainFormControllerListener;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
-import java.net.Socket;
-import java.net.SocketException;
 
 /**
  * Обеспечивает работу программы в режиме клиента
  */
-public class Client implements ConnectionListener {
+public class Client implements ConnectionListener, MainFormControllerListener {
 
-	public static final int PORT = 8189;
+	public static final int PORT = 8283;
 	public static final String EXIT_CODE = "/exit";
 /*
 	public static final String ANSI_YELLOW = "\u001B[33m";
@@ -26,6 +22,7 @@ public class Client implements ConnectionListener {
 	public static final String ANSI_RESET = "\u001B[0m";
 */
 	private Connection connection;
+	private MainFormController controller;
 
 	/**
 	 * Запрашивает у пользователя ник и организовывает обмен сообщениями с
@@ -33,17 +30,18 @@ public class Client implements ConnectionListener {
 	 */
 	public Client(Stage stage, String ip, String login, String password) throws IOException {
 		try {
-			connection = new Connection(this, ip, PORT);
+			connection = new Connection(this, ip, PORT, login);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                    ".." + File.separator + "view" + File.separator + "mainForm.fxml"));
+            Parent root = loader.load();
+            controller = loader.getController();
+            controller.addListener(this);
+            stage.setTitle("Лучший в мире чат");
+            stage.setScene(new Scene(root));
+            stage.show();
 		} catch (IOException e) {
 			printMsg("Connection exception: " + e);
 		}
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                ".." + File.separator + "view" + File.separator + "mainForm.fxml"));
-		Parent root = loader.load();
-		MainFormController controller = loader.getController();
-		stage.setTitle("Лучший в мире чат");
-		stage.setScene(new Scene(root));
-		stage.show();
 	}
 
 	private synchronized void printMsg(String msg) {
@@ -52,21 +50,26 @@ public class Client implements ConnectionListener {
 
 	@Override
 	public void onConnectionReady(Connection connection) {
-
+        connection.sendString(connection.getLogin());
 	}
 
 	@Override
-	public void onReceiveString(Connection connection, String value) {
-
-	}
+	public void onReceiveString(Connection connection, String message) {
+        controller.showMessage(message);
+    }
 
 	@Override
 	public void onDisconnect(Connection connection) {
-
+        connection.sendString(connection.getLogin());
 	}
 
 	@Override
 	public void onException(Connection connection, Exception e) {
 
 	}
+
+    @Override
+    public void sendMessage(String message) {
+        connection.sendString(message);
+    }
 }

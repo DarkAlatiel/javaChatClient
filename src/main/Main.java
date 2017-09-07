@@ -21,8 +21,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         main = this;
         this.stage = primaryStage;
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        Parent root = fxmlLoader.load(getClass().getResource(
+        Parent root = new FXMLLoader().load(getClass().getResource(
                 ".." + File.separator + "view" + File.separator + "loginForm.fxml"));
         primaryStage.setTitle("Подключение");
         primaryStage.setScene(new Scene(root));
